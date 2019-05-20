@@ -9,17 +9,17 @@ from .compiler import compiler
 from .guide import guide
 from .make import clean, compile_all
 from .take import take
+from .settings import generate_config, parse_settings
 
-from .settings import *
 
-
-def not_implemented():
+def not_implemented(args):
     print('Invalid command or not implemented...')
 
 supported_commands = {
     None : compile_all,
     'clean' : clean,
     'compile' : compiler,
+    'generate': generate_config,
     'guide' : guide,
     'take' :  take,
 }
@@ -27,7 +27,11 @@ supported_commands = {
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('command', nargs='?', help='command to run')
-    args = parser.parse_args(sys.argv[1:SUBPARSER_ARGV_START_INDEX])
+    args = parser.parse_args(sys.argv[1:2])
 
     func = supported_commands.get(args.command, not_implemented)
-    func()
+
+    if func != generate_config:
+        parse_settings()
+
+    func(sys.argv[2:])

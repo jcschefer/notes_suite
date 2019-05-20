@@ -2,17 +2,16 @@ import argparse
 import os
 import pathlib
 import subprocess
-import sys
 
-from .settings import *
+from .settings import FILENAME_SORTER, SUBCOMMAND_PREFIX
 
-def guide():
+def guide(cli_args):
     parser = argparse.ArgumentParser()
     parser.add_argument('guide_name', help='Target filename for guide file', type=str, default='guide.pdf')
     parser.add_argument('-o', '--output-dir', help='output directory to prefix file names with', type=str, default='.')
     parser.add_argument('-c', '--chronological', help='Organize files chronologically in time', action='store_true', default=False)
 
-    args = parser.parse_args(sys.argv[SUBPARSER_ARGV_START_INDEX:])
+    args = parser.parse_args(cli_args)
 
     os.chdir(args.output_dir)
 

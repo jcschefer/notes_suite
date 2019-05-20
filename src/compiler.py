@@ -2,16 +2,15 @@ import argparse
 import os
 import pathlib
 import subprocess
-import sys
 
-from .settings import *
+from .settings import configuration, SUBCOMMAND_PREFIX
 
-def compiler():
+def compiler(cli_args):
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', '--preview', help='preview the file without saving the output', action='store_true')
     parser.add_argument('-o', '--output-dir', help='output directory to prefix file names with', type=str, default='.')
     parser.add_argument('filename', help='Markdown file to be compiled', type=str)
-    args = parser.parse_args(sys.argv[SUBPARSER_ARGV_START_INDEX:])
+    args = parser.parse_args(cli_args)
 
     path = pathlib.Path(args.filename)
     pure_path = pathlib.PurePath(args.filename)
@@ -29,7 +28,7 @@ def compiler():
         str(pure_path.stem) + '.pdf' if not args.preview else '.temp.pdf')
 
     pdf_compilation_command = [
-        PDF_COMPILER,
+        configuration['PDF_COMPILER'],
         '-t', 'latex',
         '-V', 'geometry:margin=1in',
         '-o', outfile_name,
@@ -41,7 +40,7 @@ def compiler():
 
     if args.preview:
         view_command = [
-            PDF_VIEWER,
+            configuration['PDF_VIEWER'],
             outfile_name
         ]
 

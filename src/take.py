@@ -1,23 +1,22 @@
 import argparse
 import os
 import subprocess
-import sys
 
-from .settings import *
+from .settings import configuration, FILENAME_GENERATOR, FILE_HEADER_GENERATOR, SUBCOMMAND_PREFIX
 
-def take():
+def take(cli_args):
     parser = argparse.ArgumentParser()
     parser.add_argument('title', help='Title or topic of notes file (in slug format)', type=str)
 
-    args = parser.parse_args(sys.argv[SUBPARSER_ARGV_START_INDEX:])
+    args = parser.parse_args(cli_args)
 
-    filename = os.path.join(NOTES_SOURCE_DIR, FILENAME_GENERATOR(args.title))
+    filename = os.path.join(configuration['NOTES_SOURCE_DIR'], FILENAME_GENERATOR(args.title))
 
     with open(filename, 'w') as fout:
         fout.write(FILE_HEADER_GENERATOR(args.title) + '\n')
     
     editor_command = [
-        TEXT_EDITOR,
+        configuration['TEXT_EDITOR'],
         filename,
     ]
 
