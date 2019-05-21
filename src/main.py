@@ -19,13 +19,23 @@ supported_commands = {
     None : compile_all,
     'clean' : clean,
     'compile' : compiler,
-    'generate': generate_config,
+    'generate' : generate_config,
     'guide' : guide,
     'take' :  take,
 }
 
+def help_msg():
+    return '''notes [command]
+    <none>          compile all updated Markdown files in the source directory
+    clean           remove all compiled PDFs from the output directory
+    compile         compile a single specified Markdown file
+    generate        generate a default configuration file for a notes project
+    guide           build a single guide from all compiled PDFs
+    take            begin a new day of notes
+    '''
+
 def main():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description='A command-line based notes suite', usage=help_msg())
     parser.add_argument('command', nargs='?', help='command to run')
     args = parser.parse_args(sys.argv[1:2])
 
