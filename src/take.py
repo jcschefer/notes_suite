@@ -12,7 +12,7 @@ def take(cli_args):
 
     filename = os.path.join(configuration['NOTES_SOURCE_DIR'], FILENAME_GENERATOR(args.title))
 
-    with open(filename, 'w') as fout:
+    with open(filename, 'a') as fout:
         fout.write(FILE_HEADER_GENERATOR(args.title) + '\n')
     
     editor_command = [
